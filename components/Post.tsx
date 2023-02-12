@@ -13,7 +13,7 @@ interface PostProp {
 }
 
 const Post = (props: PostProp) => {
-  const {postId, message, attachmentUrl, createdAt, updatedAt, onDelete } = props
+  const {postId, message, attachmentUrl, createdAt, onDelete } = props
   const { data } = useSession()
   const inputRef =   useRef<HTMLInputElement>(null)
   const [isOpen, setIsOpen] = useState(false)
