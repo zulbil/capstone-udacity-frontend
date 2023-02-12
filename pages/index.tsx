@@ -6,7 +6,6 @@ import Login from '../components/Login';
 import Sidebar from '../components/Sidebar';
 import Feed from '../components/Feed';
 import { Session } from 'next-auth';
-import Widgets from '../components/Widgets';
 
 interface HomeProps {
   session: Promise<Session>
@@ -24,7 +23,6 @@ export default function Home({ session } : HomeProps) {
       <main className="flex">
         <Sidebar />
         <Feed />
-        <Widgets />
       </main>
     </div>
   )
