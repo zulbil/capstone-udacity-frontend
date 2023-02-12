@@ -19,7 +19,7 @@ const Posts = ({posts, loading = true, onDelete}: PostsProp) => {
             ))}
             {
                 (posts.length === 0 && !loading) && (
-                    <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                    <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400 mt-4" role="alert">
                         <span className="font-medium">No Posts! </span>
                     </div>
                 )
