@@ -76,8 +76,8 @@ const Post = (props: PostProp) => {
   }, [])
 
   return (
-    <div className='flex flex-col mt-5 rounded-t-2xl'>
-      <div className='p-5 bg-white shadow-sm'>
+    <div className='flex flex-col mt-5 rounded-2xl shadow-lg overflow-hidden'>
+      <div className='p-5 bg-white'>
         <div className='flex justify-between'>
           <div className='flex items-center space-x-2'>
             {data?.user?.image && (
