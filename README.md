@@ -6,9 +6,9 @@ The only file that you need to edit is the `.env` file in the `root` folder. Thi
 ```ts
 CLIENT_ID=qx4l2WDB88zNTpxCDlmOQiO2ADy2VpQgt // Auth0 client ID
 CLIENT_SECRET=iNLl9qF7ipvBufd0WCiJJcvdaPQloGWZHNdONh_3R0PMTGBGewCVjVCY0ndog-x1 // Auth0 Secret
-AUTH0_DOMAIN=https://zulbil.ru.auth0.com // Auth) domain
-NEXTAUTH_URL=http://localhost:3000  // Base url
-NEXT_PUBLIC_APP_DOMAIN=https://gsaexo3ft6.execute-api.us-east-1.amazonaws.com/dev // Backend serverless base url
+AUTH0_DOMAIN="https://zulbil.ru.auth0.com" // Auth) domain
+NEXTAUTH_URL="http://localhost:3000"  // Base url
+NEXT_PUBLIC_APP_DOMAIN="https://gsaexo3ft6.execute-api.us-east-1.amazonaws.com/dev" // Backend serverless base url
 NEXT_PUBLIC_SECRET=iNLl9qF7ipvBu1b0WCiJJcvdaPQloGWZHNdONh_3R0PMTGBGewCVmgVCY0ndog 
 
 ```
