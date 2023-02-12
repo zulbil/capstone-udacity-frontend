@@ -1,4 +1,3 @@
-import { ChatAlt, Share, ThumbUp } from 'heroicons-react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 import React, { useEffect, useRef, useState } from 'react'
