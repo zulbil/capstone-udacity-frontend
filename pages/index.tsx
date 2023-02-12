@@ -23,6 +23,7 @@ export default function Home({ session } : HomeProps) {
       <main className="flex">
         <Sidebar />
         <Feed />
+        {/* <Widgets /> */}
       </main>
     </div>
   )
