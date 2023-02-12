@@ -15,7 +15,7 @@ function Header() {
           alt="Next Facebook"
         />
         <div className="flex ml-2 items-center p-2">
-          <p>Facebook Clone</p>
+          <p className="font-semibold">Capstone Udacity Project</p>
         </div>
       </div>
 

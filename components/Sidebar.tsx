@@ -1,11 +1,6 @@
 import {
     User,
-    UserGroup,
-    ShoppingBag,
-    DesktopComputer,
-    Calendar,
-    Clock,
-    ChevronDown
+    UserGroup
   } from "heroicons-react"
 import SidebarRow from "./SidebarRow";
 import { useSession } from "next-auth/react";
@@ -20,11 +15,11 @@ export default function Sidebar() {
             <SidebarRow src={user?.image} title={user?.name}/>
             <SidebarRow Icon={User} title="Friends" />
             <SidebarRow Icon={UserGroup} title="Groups" />
-            <SidebarRow Icon={ShoppingBag} title="Marketplace" />
+            {/* <SidebarRow Icon={ShoppingBag} title="Marketplace" />
             <SidebarRow Icon={DesktopComputer} title="Watch" />
             <SidebarRow Icon={Calendar} title="Events" />
             <SidebarRow Icon={Clock} title="Memories" />
-            <SidebarRow Icon={ChevronDown} title="See More" />
+            <SidebarRow Icon={ChevronDown} title="See More" /> */}
         </div>
     )
 }
