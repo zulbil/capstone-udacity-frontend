@@ -1,8 +1,8 @@
 import { ChatAlt, Share, ThumbUp } from 'heroicons-react';
 import { useSession } from 'next-auth/react';
 import Image from 'next/image';
-import React, { useEffect, useState } from 'react'
-import { deletePost } from '../services/postService';
+import React, { useEffect, useRef, useState } from 'react'
+import { deletePost, updatePost } from '../services/postService';
 
 interface PostProp {
     postId: string;
@@ -10,16 +10,37 @@ interface PostProp {
     attachmentUrl: string;
     createdAt: string;
     updatedAt: string;
+    onDelete: any;
 }
 
 const Post = (props: PostProp) => {
-  const {postId, message, attachmentUrl, createdAt, updatedAt } = props
+  const {postId, message, attachmentUrl, createdAt, updatedAt, onDelete } = props
   const { data } = useSession()
+  const inputRef =   useRef<HTMLInputElement>(null)
   const [isOpen, setIsOpen] = useState(false)
+  const [editMode, setEditMode] = useState(false)
+  const toogle = useRef<HTMLDivElement>(null)
+  const idToken =   data?.user?.idToken as string
+
+  const handleClick = (event : MouseEvent) => {
+    if (toogle.current && !toogle.current.contains(event.target as Node)) {
+      setIsOpen(false);
+    }
+  }
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen);
   };
+
+  const getFullDate = (dateTime:string) => {
+    const currentDate = new Date(dateTime);
+    const fullDate = currentDate.toDateString();
+    const hour = currentDate.getHours();
+    const minute = currentDate.getMinutes();
+    const second = currentDate.getSeconds();
+
+    return `${fullDate} ${hour}:${minute}:${second}`;
+  }
 
   const removePost = async () => {
     try {
@@ -27,7 +48,7 @@ const Post = (props: PostProp) => {
       const idToken = data?.user?.idToken || ''
       if (result) {
         await deletePost(idToken, postId)
-        alert('Post successfully deleted...')
+        onDelete()
       } 
     } catch (error: any) {
       console.log('Remove Post')
@@ -35,9 +56,25 @@ const Post = (props: PostProp) => {
     }
   }
   
-  const editPost = () => {
-
+  const editPost = async (e : any) => {
+    try {
+      e.preventDefault();
+      setEditMode(true)
+      await updatePost(idToken, postId, {message: inputRef.current?.value })
+      setEditMode(false)
+      onDelete()
+    } catch (error: any) {
+      console.log('Edit Post')
+      console.log(error.message)
+    }
   }
+
+  useEffect(()=> {
+    document.addEventListener('click', handleClick);
+    return () => {
+      document.removeEventListener('click', handleClick);
+    };
+  }, [])
 
   return (
     <div className='flex flex-col mt-5 rounded-t-2xl'>
@@ -56,11 +93,11 @@ const Post = (props: PostProp) => {
             <div>
               <p className='font-medium'></p>
               <p className='text-xs text-gray-400'>
-                {(new Date(createdAt)).toDateString()}
+                {getFullDate(createdAt)}
               </p>
             </div>
           </div>
-          <div className='flex flex-col space-x-2 relative'>
+          <div className='flex flex-col space-x-2 relative' ref={toogle}>
             <button onClick={toggleDropdown} id="dropdownMenuIconHorizontalButton" data-dropdown-toggle="dropdownDotsHorizontal" className="inline-flex items-center p-2 text-sm font-medium text-center text-gray-900 bg-white rounded-lg hover:bg-gray-100 focus:ring-4 focus:outline-none dark:text-white focus:ring-gray-50 dark:bg-gray-800 dark:hover:bg-gray-700 dark:focus:ring-gray-600" type="button"> 
               <svg className="w-6 h-6" aria-hidden="true" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"></path></svg>
             </button>
@@ -70,7 +107,7 @@ const Post = (props: PostProp) => {
                 <ul className="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownMenuIconHorizontalButton">
                   <li>
                     <a 
-                    onClick={editPost}
+                    onClick={() => setEditMode(true)}
                       className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white cursor-pointer"
                     >Edit</a>
                   </li>
@@ -82,8 +119,30 @@ const Post = (props: PostProp) => {
             )}
           </div>
         </div>
-        <p className='pt-4'>{message}</p>
+        {
+          !editMode && (
+            <p className='pt-4'>{message}</p>
+          )
+        }
+        {
+          editMode && (
+            <>
+              <form className='flex flex-1 mt-4 items-center'>
+                <input 
+                    className="rounded-full h-12 bg-gray-100 flex-grow px-5 focus:outline-none"
+                    type="text" 
+                    ref={inputRef}
+                    defaultValue={message}
+                    placeholder={`What's on your mind, ${data?.user?.name} ?`} 
+                />
+                <button hidden type="submit" onClick={editPost}></button>
+                <p className='text-xs ml-2 text-red-500 text-center text-bold cursor-pointer' onClick={() => setEditMode(false)}>Cancel</p>
+              </form>
+            </>
+          )
+        }
       </div>
+
       { attachmentUrl && (
         <div className='relative h-56 md:h-96 bg-white overflow-hidden'>
           <Image 

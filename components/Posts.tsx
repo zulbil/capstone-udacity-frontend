@@ -3,25 +3,24 @@ import Post from './Post';
 
 interface PostsProp {
     posts: any
+    loading: boolean
+    onDelete: any
 }
-const Posts = ({posts}: PostsProp) => {
+const Posts = ({posts, loading = true, onDelete}: PostsProp) => {
 
     return (
         <div>
-            { (posts.length > 0) && posts.map((post:any, pos: number) => (
+            { (posts.length > 0 && !loading) && posts.map((post:any, pos: number) => (
                 <Post
                     key={pos}
                     {...post}
+                    onDelete={onDelete}
                  />
             ))}
             {
-                (posts.length === 0) && (
-                    <div className=" mt-5 bg-teal-100 border-t-4 border-teal-500 rounded-b text-teal-900 px-4 py-3 shadow-md" role="alert">
-                        <div className="flex">
-                            <div>
-                            <p className="font-bold">No posts</p>
-                            </div>
-                        </div>
+                (posts.length === 0 && !loading) && (
+                    <div className="p-4 mb-4 text-sm text-green-800 rounded-lg bg-green-50 dark:bg-gray-800 dark:text-green-400" role="alert">
+                        <span className="font-medium">No Posts! </span>
                     </div>
                 )
             }
